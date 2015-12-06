@@ -103,11 +103,14 @@ public class LoginPanel extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonloginrespActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonloginrespActionPerformed
-        String $userlogin;
-        char[] $userpass;
+        String $userlogin, $userpassstring;
+        char[] $userpass = null;
         $userlogin = jTextField1.getText();
         $userpass = jPasswordField1.getPassword();
-        System.out.println($userlogin);
+        $userpassstring = new String($userpass);
+        if($userlogin == executeQuery(SELECT usuario_id FROM usuarios WHERE $userlogin == usuario_id){
+        
+    }
         
         
     }//GEN-LAST:event_jButtonloginrespActionPerformed
