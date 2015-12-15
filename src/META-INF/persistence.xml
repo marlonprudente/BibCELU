@@ -7,6 +7,7 @@
     <class>entidades.LivrosIndicados</class>
     <class>entidades.Reservas</class>
     <class>entidades.Usuarios</class>
+    <class>entidades.Exemplares</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://100.43.1.160:3306/BibCELU?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

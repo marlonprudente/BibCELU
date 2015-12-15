@@ -14,13 +14,22 @@ import java.util.Calendar;
 public class Emprestimos {
     public Calendar datainicio;
     public Calendar datafim;
-    public String exemplarID, usuarioID;
     
-    public void setEmprestimo(String exemplarID, String usuarioID){
+    public Usuario usuarioID;
+    public Exemplares exemplar;
+    public String EmprestimoID;
+    
+    public void setEmprestimo(Exemplares exemplar, Usuario usuarioID){
         this.datainicio = gettoday();
+        this.EmprestimoID = this.datainicio.getTime().toString();
         this.datafim = datainicio;
+        exemplar.emprestimoID = this; 
         datafim.add(Calendar.DATE ,5);
+        int n = usuarioID.numerodeemprestimos;
+        n++;
+        usuarioID.emprestimos[n] = this;
 }
+    
     public void prolongarEmprestimo(){
         datafim.add(Calendar.DATE ,5);
     }
@@ -30,6 +39,8 @@ public class Emprestimos {
             return cal;
     }
     public void killEmprestimo() throws Throwable{
+        this.usuarioID.numerodeemprestimos--;
+        this.exemplar.emprestimoID = null;
         this.finalize();
     }
    

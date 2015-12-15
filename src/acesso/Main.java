@@ -8,6 +8,7 @@ package acesso;
 import entidades.*;
 import javax.persistence.*;
 
+
 /**
  *
  * @author Marlon Prudente <marlonmateuspr@gmail.com>
