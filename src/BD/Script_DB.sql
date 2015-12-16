@@ -1,4 +1,3 @@
-
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -18,6 +17,8 @@ USE `BibCELU` ;
 -- -----------------------------------------------------
 -- Table `BibCELU`.`usuarios`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `BibCELU`.`usuarios` ;
+
 CREATE TABLE IF NOT EXISTS `BibCELU`.`usuarios` (
   `usuario_id` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `nome` VARCHAR(45) NOT NULL COMMENT '',
@@ -35,6 +36,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `BibCELU`.`generos`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `BibCELU`.`generos` ;
+
 CREATE TABLE IF NOT EXISTS `BibCELU`.`generos` (
   `genero_id` INT NOT NULL COMMENT '',
   `descricao` VARCHAR(45) NOT NULL COMMENT '',
@@ -45,6 +48,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `BibCELU`.`livros`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `BibCELU`.`livros` ;
+
 CREATE TABLE IF NOT EXISTS `BibCELU`.`livros` (
   `livro_id` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `titulo` VARCHAR(45) NOT NULL COMMENT '',
@@ -68,6 +73,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `BibCELU`.`livrosindicados`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `BibCELU`.`livrosindicados` ;
+
 CREATE TABLE IF NOT EXISTS `BibCELU`.`livrosindicados` (
   `indicacao_id` INT NOT NULL COMMENT '',
   `titulo` VARCHAR(45) NOT NULL COMMENT '',
@@ -87,25 +94,64 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BibCELU`.`reserva`
+-- Table `BibCELU`.`exemplar`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BibCELU`.`reserva` (
-  `reserva_id` INT NOT NULL AUTO_INCREMENT COMMENT '',
+DROP TABLE IF EXISTS `BibCELU`.`exemplar` ;
+
+CREATE TABLE IF NOT EXISTS `BibCELU`.`exemplar` (
+  `exemplarId` INT NOT NULL COMMENT '',
   `livro_id` INT NOT NULL COMMENT '',
-  `usuario_id` INT NOT NULL COMMENT '',
-  `datadeemprestimo` DATE NOT NULL COMMENT '',
-  `datadedevolucao` DATE NOT NULL COMMENT '',
-  PRIMARY KEY (`reserva_id`)  COMMENT '',
-  INDEX `fk_reserva_livros_idx` (`livro_id` ASC)  COMMENT '',
-  INDEX `fk_reserva_usuarios1_idx` (`usuario_id` ASC)  COMMENT '',
-  CONSTRAINT `fk_reserva_livros`
+  PRIMARY KEY (`exemplarId`)  COMMENT '',
+  INDEX `fk_exemplar_livros1_idx` (`livro_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_exemplar_livros1`
     FOREIGN KEY (`livro_id`)
     REFERENCES `BibCELU`.`livros` (`livro_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `BibCELU`.`emprestimo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `BibCELU`.`emprestimo` ;
+
+CREATE TABLE IF NOT EXISTS `BibCELU`.`emprestimo` (
+  `emprestimoId` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `usuario_id` INT NOT NULL COMMENT '',
+  `datadeemprestimo` DATE NOT NULL COMMENT '',
+  `datadedevolucao` DATE NOT NULL COMMENT '',
+  `exemplarId` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`emprestimoId`)  COMMENT '',
+  INDEX `fk_reserva_usuarios1_idx` (`usuario_id` ASC)  COMMENT '',
+  INDEX `fk_emprestimo_exemplar1_idx` (`exemplarId` ASC)  COMMENT '',
   CONSTRAINT `fk_reserva_usuarios1`
     FOREIGN KEY (`usuario_id`)
     REFERENCES `BibCELU`.`usuarios` (`usuario_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_emprestimo_exemplar1`
+    FOREIGN KEY (`exemplarId`)
+    REFERENCES `BibCELU`.`exemplar` (`exemplarId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `BibCELU`.`biblioteca`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `BibCELU`.`biblioteca` ;
+
+CREATE TABLE IF NOT EXISTS `BibCELU`.`biblioteca` (
+  `bibliotecaid` INT NOT NULL COMMENT '',
+  `nome` VARCHAR(45) NULL COMMENT '',
+  `exemplarId` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`bibliotecaid`)  COMMENT '',
+  INDEX `fk_biblioteca_exemplar1_idx` (`exemplarId` ASC)  COMMENT '',
+  CONSTRAINT `fk_biblioteca_exemplar1`
+    FOREIGN KEY (`exemplarId`)
+    REFERENCES `BibCELU`.`exemplar` (`exemplarId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
